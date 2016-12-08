@@ -538,6 +538,8 @@ public abstract class Utils {
     public static void drawXAxisValue(Canvas c, String text, float x, float y,
                                       Paint paint,
                                       MPPointF anchor, float angleDegrees) {
+        String[] values = text.split("\n");
+        text = values[0];
 
         float drawOffsetX = 0.f;
         float drawOffsetY = 0.f;
@@ -596,6 +598,12 @@ public abstract class Utils {
             drawOffsetY += y;
 
             c.drawText(text, drawOffsetX, drawOffsetY, paint);
+            
+            if (values.length > 1) {
+                String value2 = values[1];
+                float off = (paint.measureText(value2) - paint.measureText(text)) / 2;
+                c.drawText(value2, drawOffsetX - off, drawOffsetY + lineHeight, paint);
+            }
         }
 
         paint.setTextAlign(originalTextAlign);
