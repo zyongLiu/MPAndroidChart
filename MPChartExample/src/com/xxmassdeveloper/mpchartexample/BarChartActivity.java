@@ -2,7 +2,10 @@
 package com.xxmassdeveloper.mpchartexample;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.RectF;
+import android.graphics.Shader;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -35,6 +38,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.xxmassdeveloper.mpchartexample.custom.DayAxisValueFormatter;
 import com.xxmassdeveloper.mpchartexample.custom.MyAxisValueFormatter;
+import com.xxmassdeveloper.mpchartexample.custom.TwoLinesLabelDayAxisValueFormatter;
 import com.xxmassdeveloper.mpchartexample.custom.XYMarkerView;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 
@@ -77,8 +81,8 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
 
         mChart.setDrawGridBackground(false);
         // mChart.setDrawYLabels(false);
-
-        IAxisValueFormatter xAxisFormatter = new DayAxisValueFormatter(mChart);
+        //使用自定义x轴标签
+        IAxisValueFormatter xAxisFormatter = new TwoLinesLabelDayAxisValueFormatter(mChart);
 
         XAxis xAxis = mChart.getXAxis();
         xAxis.setPosition(XAxisPosition.BOTTOM);
@@ -89,7 +93,8 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         xAxis.setValueFormatter(xAxisFormatter);
 
         IAxisValueFormatter custom = new MyAxisValueFormatter();
-
+        //设置图例与边框间距
+        mChart.setExtraBottomOffset(20f);
         YAxis leftAxis = mChart.getAxisLeft();
         leftAxis.setTypeface(mTfLight);
         leftAxis.setLabelCount(8, false);
@@ -203,6 +208,33 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
                             .show();
                 break;
             }
+            //柱体圆角
+            case R.id.actionToggleBarBordersCircular: {
+                for (IBarDataSet set : mChart.getData().getDataSets()) {
+                    if (set.getRadii() != null) {
+                        ((BarDataSet) set).setRadii(null);
+                    } else {
+                        ((BarDataSet) set).setRadii(new float[]{20f, 20f, 20f, 20f, 0f, 0f, 0f, 0f});
+                    }
+                }
+                mChart.invalidate();
+                break;
+            }
+            //柱体渐变
+            case R.id.actionToggleBarBordersGradient: {
+//                for (IBarDataSet set : mChart.getData().getDataSets()) {
+//                    if (set.getShader() == null) {
+//                        ((BarDataSet) set).setShader(new LinearGradient(0, 45, 0, 599,
+//                                new int[]{Color.parseColor("#6ec4b1"), Color.parseColor("#25b3e4")},
+//                                null, Shader.TileMode.REPEAT));
+//                    } else {
+//                        ((BarDataSet) set).setShader(null);
+//                        ((BarDataSet) set).setColor(Color.BLUE);
+//                    }
+//                }
+                mChart.invalidate();
+                break;
+            }
         }
         return true;
     }
@@ -213,7 +245,7 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
         tvX.setText("" + (mSeekBarX.getProgress() + 2));
         tvY.setText("" + (mSeekBarY.getProgress()));
 
-        setData(mSeekBarX.getProgress() + 1 , mSeekBarY.getProgress());
+        setData(mSeekBarX.getProgress() + 1, mSeekBarY.getProgress());
         mChart.invalidate();
     }
 
@@ -249,8 +281,10 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
             mChart.notifyDataSetChanged();
         } else {
             set1 = new BarDataSet(yVals1, "The year 2017");
-            set1.setColors(ColorTemplate.MATERIAL_COLORS);
-
+//            set1.setColors(ColorTemplate.MATERIAL_COLORS);
+            set1.setShader(new LinearGradient(0, 0, 0, 1080,
+                    new int[]{Color.GREEN,Color.RED},
+                    null, Shader.TileMode.REPEAT));
             ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
             dataSets.add(set1);
 
@@ -287,5 +321,6 @@ public class BarChartActivity extends DemoBase implements OnSeekBarChangeListene
     }
 
     @Override
-    public void onNothingSelected() { }
+    public void onNothingSelected() {
+    }
 }

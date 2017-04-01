@@ -3,8 +3,11 @@ package com.github.mikephil.charting.renderer;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.RectF;
+import android.graphics.Shader;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.buffer.BarBuffer;
@@ -144,8 +147,19 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
         final boolean isSingleColor = dataSet.getColors().size() == 1;
 
         if (isSingleColor) {
-            mRenderPaint.setColor(dataSet.getColor());
+//            mRenderPaint.setColor(dataSet.getColor());
+            //使用渐变渲染
+            if (dataSet.getShader() != null) {
+                mRenderPaint.setShader(dataSet.getShader());
+//                mRenderPaint.setShader(new LinearGradient(0, mViewPortHandler.contentTop(), 0, mViewPortHandler.contentBottom(),
+//                        new int[]{Color.parseColor("#6ec4b1"), Color.parseColor("#25b3e4")},
+//                        null, Shader.TileMode.REPEAT));
+            } else {
+                mRenderPaint.setColor(dataSet.getColor());
+            }
         }
+        //使用Path
+        Path mPath = new Path();
 
         for (int j = 0; j < buffer.size(); j += 4) {
 
@@ -161,12 +175,23 @@ public class BarChartRenderer extends BarLineScatterCandleBubbleRenderer {
                 mRenderPaint.setColor(dataSet.getColor(j / 4));
             }
 
-            c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                    buffer.buffer[j + 3], mRenderPaint);
-
-            if (drawBorder) {
+            //Radii不为空时，使用圆角
+            if (dataSet.getRadii() != null && dataSet.getRadii().length == 8) {
+                mPath.addRoundRect(new RectF(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
+                        buffer.buffer[j + 3]), dataSet.getRadii(), Path.Direction.CW);
+                c.drawPath(mPath, mRenderPaint);
+                if (drawBorder) {
+                    c.drawPath(mPath, mBarBorderPaint);
+                }
+                mPath.reset();
+            }else {
                 c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
-                        buffer.buffer[j + 3], mBarBorderPaint);
+                        buffer.buffer[j + 3], mRenderPaint);
+
+                if (drawBorder) {
+                    c.drawRect(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2],
+                            buffer.buffer[j + 3], mBarBorderPaint);
+                }
             }
         }
     }

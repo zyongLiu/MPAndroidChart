@@ -2,6 +2,7 @@
 package com.github.mikephil.charting.data;
 
 import android.graphics.Color;
+import android.graphics.Shader;
 
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
@@ -234,5 +235,27 @@ public class BarDataSet extends BarLineScatterCandleBubbleDataSet<BarEntry> impl
     @Override
     public String[] getStackLabels() {
         return mStackLabels;
+    }
+
+    @Override
+    public Shader getShader() {
+        return mBarShader;
+    }
+
+
+    private Shader mBarShader;
+    private float[] radii;
+
+    @Override
+    public float[] getRadii() {
+        return radii;
+    }
+
+    public void setRadii(float[] radii) {
+        this.radii = radii;
+    }
+
+    public void setShader(Shader mBarShader) {
+        this.mBarShader = mBarShader;
     }
 }

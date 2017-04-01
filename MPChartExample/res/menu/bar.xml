@@ -42,4 +42,13 @@
         android:title="Show Bar Borders">
     </item>
 
+    <item
+        android:id="@+id/actionToggleBarBordersCircular"
+        android:title="Show Bar Circular Bead">
+    </item>
+    <item
+        android:id="@+id/actionToggleBarBordersGradient"
+        android:title="Show Bar Borders Color Gradient">
+    </item>
+
 </menu>

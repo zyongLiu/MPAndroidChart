@@ -1,5 +1,7 @@
 package com.github.mikephil.charting.interfaces.datasets;
 
+import android.graphics.Shader;
+
 import com.github.mikephil.charting.data.BarEntry;
 
 /**
@@ -61,4 +63,19 @@ public interface IBarDataSet extends IBarLineScatterCandleBubbleDataSet<BarEntry
      * @return
      */
     String[] getStackLabels();
+
+    /**
+     * 柱体的填充渲染
+     * @return
+     */
+    Shader getShader();
+
+    /**
+     * Each corner receives
+     * two radius values [X, Y]. The corners are ordered top-left, top-right,
+     * bottom-right, bottom-left
+     * 八个方向  0表示非圆角
+     * @return Array of 8 values, 4 pairs of [X,Y] radii
+     */
+    float[] getRadii();
 }
