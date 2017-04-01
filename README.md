@@ -1,3 +1,16 @@
+# 新增功能
+    1.增加x轴标签两行显示功能，label需以\n分割
+    2.柱状图柱体 支持圆角显示
+    3.柱状图柱体 支持渐变色填充
+
+     - **BarChart (gradient fill)**
+![alt tag](https://github.com/zyongLiu/MPAndroidChart/blob/master/screenshots/barchart_circular_gradient.png?raw=true)
+
+    详细说明将以博客形式给出
+
+
+# 以下为原始项目介绍
+
 [![Twitter](https://img.shields.io/badge/Twitter-@PhilippJahoda-blue.svg?style=flat)](http://twitter.com/philippjahoda)
 [![Twitter](https://img.shields.io/badge/Twitter-@mpandroidchart-blue.svg?style=flat)](http://twitter.com/mpandroidchart)
 [![Android Arsenal](http://img.shields.io/badge/Android%20Arsenal-MPAndroidChart-orange.svg?style=flat)](http://android-arsenal.com/details/1/741)
